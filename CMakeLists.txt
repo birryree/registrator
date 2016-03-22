@@ -7,11 +7,11 @@ project( StitchingOpencv )
 set ( StitchingOpencv_VERSION_MAJOR 1 )
 set ( StitchingOpencv_VERSION_MINOR 0 )
 
-find_package( OpenCV 3.1.0 COMPONENTS highgui cudaimgproc REQUIRED )
+find_package( OpenCV 3.1.0 COMPONENTS highgui cudaimgproc video imgcodecs REQUIRED )
 find_package( Boost 1.6.0 COMPONENTS program_options REQUIRED )
 
 INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
-add_executable( stitch Montage.cpp )
+add_executable( stitch stitch.cpp )
 target_link_libraries( stitch ${OpenCV_LIBRARIES} )
 target_link_libraries( stitch ${Boost_LIBRARIES} )
 

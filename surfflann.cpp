@@ -9,6 +9,7 @@
 #include <opencv2/highgui.hpp>
 #include <opencv2/calib3d/calib3d.hpp>
 #include <opencv2/imgcodecs.hpp>
+#include <opencv2/imgproc.hpp>
 
 using namespace cv;
 using namespace cv::xfeatures2d;
@@ -79,15 +80,17 @@ int main(int argc, char** argv) {
     
     std::vector<Point2f> obj, scene;
 
+    std::cout << "Found " << good_matches.size() << " matches\n";
+
     for (int i = 0; i < good_matches.size(); ++i)
     {
         obj.push_back(baseKeypoints[good_matches[i].queryIdx].pt);
         scene.push_back(destKeypoints[good_matches[i].trainIdx].pt);
     }
 
-    Mat hTransform = findHomography(obj, scene, CV_RANSAC);
+//Mat hTransform = findHomography(obj, scene, CV_RANSAC);
 
-    std::vector<Point2f> obj_corners(4);
+    /*std::vector<Point2f> obj_corners(4);
     obj_corners[0] = cvPoint(0,0);
     obj_corners[1] = cvPoint(base.cols, 0);
     obj_corners[2] = cvPoint(base.cols, base.rows);
@@ -95,17 +98,17 @@ int main(int argc, char** argv) {
 
     std::vector<Point2f> scene_corners(4);
 
-    perspectiveTransform(obj_corners, scene_corners, hTransform);
+ //   perspectiveTransform(obj_corners, scene_corners, hTransform);
 
     //-- Draw lines between the corners (the mapped object in the scene - image_2 )
     line( matchedImage, scene_corners[0] + Point2f( base.cols, 0), scene_corners[1] + Point2f( base.cols, 0), Scalar(0, 255, 0), 4 );
     line( matchedImage, scene_corners[1] + Point2f( base.cols, 0), scene_corners[2] + Point2f( base.cols, 0), Scalar( 0, 255, 0), 4 );
     line( matchedImage, scene_corners[2] + Point2f( base.cols, 0), scene_corners[3] + Point2f( base.cols, 0), Scalar( 0, 255, 0), 4 );
-    line( matchedImage, scene_corners[3] + Point2f( base.cols, 0), scene_corners[0] + Point2f( base.cols, 0), Scalar( 0, 255, 0), 4 );
+    line( matchedImage, scene_corners[3] + Point2f( base.cols, 0), scene_corners[0] + Point2f( base.cols, 0), Scalar( 0, 255, 0), 4 );*/
 
-    imshow("Good Matches", matchedImage);
+    //imshow("Good Matches", matchedImage);
     //
-    //imwrite("cells.tif", matchedImage);
+    imwrite("cells.tif", matchedImage);
 
     waitKey(0); 
 }

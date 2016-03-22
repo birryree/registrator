@@ -7,6 +7,7 @@
 #include <boost/format.hpp>
 
 #include <iostream>
+#include <ifstream>
 #include <vector>
 #include <string>
 
@@ -18,6 +19,22 @@ namespace po = boost::program_options;
 enum class GridType { GridRowByRow, GridRowByColumn, GridSnakeByRow, GridSnakeByColumn};
 
 std::vector<cv::Mat> getGridLayout(GridType, int, int, double, double, std::string&, std::string&, int, int, int);
+
+class ImageCollectionElement {
+public:
+	ImageCollectionElement(std::fstream ifile, int idx) : file(ifile), index(idx) {
+
+	}
+
+	int getDimensionality() { return dimensionality; }
+	void setDimensionality(int dim) { dimensionality = dim;}
+
+private:
+	int dimensionality;
+	int index;
+	std::fstream file;
+	cv::Mat image;
+};
 
 struct StitchingParameters {
 	StitchingParameters() = default;
@@ -34,6 +51,7 @@ struct StitchingParameters {
 	int dimensionality;
 
 	bool computeOverlap;
+	bool sequential;
 
 	GridType gridType;
 };
@@ -114,5 +132,42 @@ std::vector<cv::Mat> getGridLayout(GridType type, int gridSizeX, int gridSizeY, 
 {
 	// TODO also have to downsample these images with pyramid down
 	// if the option is set
+
+	std::string replaceX = "{", replaceY = "{", replaceI = "{";
+	std::string::size_type numXValues = 0, numYValues = 0, numIValues = 0;
+
+	std::vector<ImageCollectionElement>
+
+	// snake by rows grid type
+	if (gridType == GridType.GridSnakeByRow) {
+		auto i1 = filenames.find("{1", 0);
+		auto i2 = filenames.find("1}", 0);
+
+		if (i1 >= 0 && i2 > 0) {
+			replaceI.insert(1, i2 - i1, "i");
+			replaceI.append("}");
+		}
+		else {
+			replaceI = "\\\\\\\\";
+		}
+
+		// determine the layout
+		for (int i = 0; i < gridSizeX * gridSizeY; ++i) {
+
+		}
+	}
+
+
 	return std::vector<cv::Mat>();
+}
+
+std::vector<cv::Mat> stitchCollection(cv::InputArray elements, const StitchingParameters parameters) {
+	if (parameters.computeOverlap) {
+		// find overlapping titles
+		std::vector<
+	}	
+}
+
+std::vector<std::pair<cv::Mat, cv::Mat>> findOverlappingTiles(const std::vector<cv::Mat>& elements, const StitchingParameters parameters) {
+
 }
